@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Interview Analyzer</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    background: #eef2f7;
+    color: #222;
+}
+
+/* Header */
+header {
+    background: #182848;
+    color: white;
+    padding: 20px 8%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+header h1 {
+    color: #4facfe;
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    margin-left: 20px;
+}
+
+/* Hero */
+.hero {
+    background: linear-gradient(135deg, #182848, #4b6cb7);
+    color: white;
+    text-align: center;
+    padding: 55px 20px;
+}
+
+.hero h2 {
+    font-size: 38px;
+    margin-bottom: 15px;
+}
+
+.hero p {
+    font-size: 18px;
+}
+
+/* Main */
+.container {
+    width: 90%;
+    max-width: 1100px;
+    margin: 35px auto;
+}
+
+/* Cards */
+.card {
+    background: white;
+    padding: 25px;
+    margin-bottom: 25px;
+    border-radius: 12px;
+    box-shadow: 0 5px 18px rgba(0,0,0,0.1);
+}
+
+.card h2 {
+    color: #182848;
+    margin-bottom: 15px;
+}
+
+/* Question */
+.question-box {
+    background: #f5f8ff;
+    padding: 20px;
+    border-left: 5px solid #4facfe;
+    font-size: 19px;
+    line-height: 1.6;
+}
+
+/* Buttons */
+button {
+    border: none;
+    padding: 13px 22px;
+    border-radius: 7px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    margin: 8px 5px 0 0;
+}
+
+.start {
+    background: #4facfe;
+    color: white;
+}
+
+.stop {
+    background: #ff5c5c;
+    color: white;
+}
+
+.analyze {
+    background: #182848;
+    color: white;
+}
+
+.next {
+    background: #28a745;
+    color: white;
+}
+
+button:hover {
+    opacity: 0.85;
+}
+
+/* Timer */
+.timer {
+    font-size: 25px;
+    font-weight: bold;
+    color: #ff5c5c;
+    margin: 15px 0;
+}
+
+/* Answer */
+textarea {
+    width: 100%;
+    height: 160px;
+    padding: 15px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    resize: vertical;
+    font-size: 16px;
+}
+
+/* Result */
+.result {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.result-box {
+    background: #f5f8ff;
+    padding: 20px;
+    text-align: center;
+    border-radius: 10px;
+}
+
+.result-box h3 {
+    color: #555;
+}
+
+.score {
+    font-size: 35px;
+    color: #4facfe;
+    font-weight: bold;
+}
+
+/* Feedback */
+.feedback {
+    margin-top: 20px;
+    padding: 20px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    line-height: 1.7;
+}
+
+.good {
+    color: green;
+}
+
+.warning {
+    color: #d97706;
+}
+
+/* Progress */
+.progress-container {
+    background: #ddd;
+    height: 15px;
+    border-radius: 20px;
+    margin-top: 10px;
+}
+
+.progress {
+    height: 15px;
+    width: 0%;
+    background: #4facfe;
+    border-radius: 20px;
+}
+
+/* Footer */
+footer {
+    background: #182848;
+    color: white;
+    text-align: center;
+    padding: 20px;
+    margin-top: 40px;
+}
+
+@media(max-width: 700px) {
+    header {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    nav a {
+        margin: 5px;
+    }
+
+    .hero h2 {
+        font-size: 28px;
+    }
+}
+</style>
+
+</head>
+
+<body>
+
+<header>
+    <h1>AI Interview Analyzer</h1>
+
+```
+<nav>
+    <a href="#interview">Interview</a>
+    <a href="#analysis">Analysis</a>
+</nav>
+```
+
+</header>
+
+<section class="hero">
+    <h2>AI Interview Analyzer 🎤</h2>
+    <p>Practice interview questions and analyze your answers instantly.</p>
+</section>
+
+<div class="container" id="interview">
+
+```
+<!-- Question -->
+<div class="card">
+    <h2>Interview Question</h2>
+
+    <div class="question-box" id="question">
+        Tell me about yourself and your technical skills.
+    </div>
+
+    <button class="next" onclick="nextQuestion()">
+        Next Question
+    </button>
+</div>
+
+<!-- Timer and Speech -->
+<div class="card">
+    <h2>🎤 Record Your Answer</h2>
+
+    <div class="timer" id="timer">
+        Time: 00:00
+    </div>
+
+    <button class="start" onclick="startRecording()">
+        🎤 Start Speaking
+    </button>
+
+    <button class="stop" onclick="stopRecording()">
+        ⏹ Stop
+    </button>
+
+    <textarea id="answer"
+    placeholder="Your speech will appear here. You can also type your answer manually..."></textarea>
+
+    <br>
+
+    <button class="analyze" onclick="analyzeAnswer()">
+        🔍 Analyze Answer
+    </button>
+</div>
+
+<!-- Analysis -->
+<div class="card" id="analysis">
+
+    <h2>📊 Interview Analysis</h2>
+
+    <div class="result">
+
+        <div class="result-box">
+            <h3>Overall Score</h3>
+            <div class="score" id="score">0%</div>
+        </div>
+
+        <div class="result-box">
+            <h3>Word Count</h3>
+            <div class="score" id="wordCount">0</div>
+        </div>
+
+        <div class="result-box">
+            <h3>Keywords</h3>
+            <div class="score" id="keywordScore">0</div>
+        </div>
+
+        <div class="result-box">
+            <h3>Confidence</h3>
+            <div class="score" id="confidence">0%</div>
+        </div>
+
+    </div>
+
+    <h3 style="margin-top:25px;">Answer Quality</h3>
+
+    <div class="progress-container">
+        <div class="progress" id="progress"></div>
+    </div>
+
+    <div class="feedback" id="feedback">
+        Submit an answer to receive your interview analysis.
+    </div>
+
+</div>
+```
+
+</div>
+
+<footer>
+    <p>© 2026 AI Interview Analyzer | Cloud & AI Mini Project</p>
+</footer>
+
+<script>
+
+/* Questions */
+
+const questions = [
+    "Tell me about yourself and your technical skills.",
+    "What are your strengths and weaknesses?",
+    "Why should we hire you?",
+    "Describe a challenging project you worked on.",
+    "Where do you see yourself in five years?",
+    "What do you know about cloud computing?",
+    "Explain one programming language you know well."
+];
+
+let currentQuestion = 0;
+
+
+/* Timer */
+
+let seconds = 0;
+let timerInterval = null;
+
+function startTimer() {
+
+    if (timerInterval !== null) return;
+
+    timerInterval = setInterval(function() {
+
+        seconds++;
+
+        let minutes = Math.floor(seconds / 60);
+        let remainingSeconds = seconds % 60;
+
+        document.getElementById("timer").innerText =
+            "Time: " +
+            String(minutes).padStart(2, "0") +
+            ":" +
+            String(remainingSeconds).padStart(2, "0");
+
+    }, 1000);
+}
+
+function stopTimer() {
+
+    clearInterval(timerInterval);
+    timerInterval = null;
+}
+
+
+/* Speech Recognition */
+
+let recognition;
+let isRecording = false;
+
+if ("webkitSpeechRecognition" in window ||
+    "SpeechRecognition" in window) {
+
+    const SpeechRecognition =
+        window.SpeechRecognition ||
+        window.webkitSpeechRecognition;
+
+    recognition = new SpeechRecognition();
+
+    recognition.continuous = true;
+    recognition.interimResults = true;
+    recognition.lang = "en-US";
+
+    recognition.onresult = function(event) {
+
+        let transcript = "";
+
+        for (let i = event.resultIndex;
+             i < event.results.length;
+             i++) {
+
+            transcript += event.results[i][0].transcript;
+        }
+
+        document.getElementById("answer").value = transcript;
+    };
+
+} else {
+
+    console.log("Speech recognition is not supported.");
+}
+
+
+/* Start Recording */
+
+function startRecording() {
+
+    if (!recognition) {
+
+        alert(
+            "Speech recognition is not supported in this browser. Please type your answer manually."
+        );
+
+        return;
+    }
+
+    if (!isRecording) {
+
+        recognition.start();
+
+        isRecording = true;
+
+        startTimer();
+    }
+}
+
+
+/* Stop Recording */
+
+function stopRecording() {
+
+    if (recognition && isRecording) {
+
+        recognition.stop();
+
+        isRecording = false;
+
+        stopTimer();
+    }
+}
+
+
+/* Next Question */
+
+function nextQuestion() {
+
+    currentQuestion++;
+
+    if (currentQuestion >= questions.length) {
+        currentQuestion = 0;
+    }
+
+    document.getElementById("question").innerText =
+        questions[currentQuestion];
+
+    document.getElementById("answer").value = "";
+
+    document.getElementById("score").innerText = "0%";
+    document.getElementById("wordCount").innerText = "0";
+    document.getElementById("keywordScore").innerText = "0";
+    document.getElementById("confidence").innerText = "0%";
+
+    document.getElementById("progress").style.width = "0%";
+
+    document.getElementById("feedback").innerHTML =
+        "Submit your new answer to receive an analysis.";
+}
+
+
+/* Analyze Answer */
+
+function analyzeAnswer() {
+
+    const answer =
+        document.getElementById("answer").value.trim();
+
+    if (answer.length === 0) {
+
+        alert("Please provide an answer first.");
+        return;
+    }
+
+    const words =
+        answer.split(/\s+/).filter(word => word.length > 0);
+
+    const wordCount = words.length;
+
+    document.getElementById("wordCount").innerText =
+        wordCount;
+
+
+    /* Keywords */
+
+    const keywords = [
+        "skill",
+        "experience",
+        "project",
+        "team",
+        "learn",
+        "technology",
+        "programming",
+        "problem",
+        "solution",
+        "communication",
+        "development",
+        "cloud",
+        "software"
+    ];
+
+    let matchedKeywords = 0;
+
+    const lowerAnswer = answer.toLowerCase();
+
+    keywords.forEach(function(keyword) {
+
+        if (lowerAnswer.includes(keyword)) {
+            matchedKeywords++;
+        }
+
+    });
+
+    document.getElementById("keywordScore").innerText =
+        matchedKeywords + "/" + keywords.length;
+
+
+    /* Word Score */
+
+    let wordScore = 0;
+
+    if (wordCount >= 80) {
+        wordScore = 30;
+    } else if (wordCount >= 50) {
+        wordScore = 25;
+    } else if (wordCount >= 30) {
+        wordScore = 20;
+    } else if (wordCount >= 15) {
+        wordScore = 12;
+    } else {
+        wordScore = 5;
+    }
+
+
+    /* Keyword Score */
+
+    let keyScore =
+        Math.round((matchedKeywords / keywords.length) * 30);
+
+
+    /* Sentence Score */
+
+    const sentences =
+        answer.split(/[.!?]+/).filter(s => s.trim().length > 0);
+
+    let sentenceScore = 0;
+
+    if (sentences.length >= 5) {
+        sentenceScore = 20;
+    } else if (sentences.length >= 3) {
+        sentenceScore = 15;
+    } else if (sentences.length >= 2) {
+        sentenceScore = 10;
+    } else {
+        sentenceScore = 5;
+    }
+
+
+    /* Confidence Score */
+
+    let confidence = 0;
+
+    const confidenceWords = [
+        "I can",
+        "I have",
+        "I worked",
+        "I developed",
+        "I learned",
+        "I achieved",
+        "I solved",
+        "I created"
+    ];
+
+    confidenceWords.forEach(function(word) {
+
+        if (answer.toLowerCase().includes(word.toLowerCase())) {
+            confidence += 8;
+        }
+
+    });
+
+    confidence = Math.min(100, confidence + 20);
+
+    document.getElementById("confidence").innerText =
+        confidence + "%";
+
+
+    /* Final Score */
+
+    let finalScore =
+        wordScore +
+        keyScore +
+        sentenceScore +
+        Math.round(confidence * 0.2);
+
+    finalScore = Math.min(100, finalScore);
+
+    document.getElementById("score").innerText =
+        finalScore + "%";
+
+    document.getElementById("progress").style.width =
+        finalScore + "%";
+
+
+    /* Feedback */
+
+    let feedback = "";
+
+    if (finalScore >= 80) {
+
+        feedback = `
+            <h3 class="good">Excellent Answer! ⭐</h3>
+            <p>Your answer has good detail and relevant keywords.</p>
+            <p><b>Suggestion:</b> Keep using specific examples from your projects or experience.</p>
+        `;
+
+    } else if (finalScore >= 60) {
+
+        feedback = `
+            <h3 class="good">Good Answer 👍</h3>
+            <p>Your answer is reasonable but could be more detailed.</p>
+            <p><b>Suggestion:</b> Add examples, achievements, and technical details.</p>
+        `;
+
+    } else {
+
+        feedback = `
+            <h3 class="warning">Needs Improvement ⚠️</h3>
+            <p>Your answer is too short or does not contain enough relevant information.</p>
+            <p><b>Suggestion:</b> Explain your skills, experience, projects, and the solutions you provided.</p>
+        `;
+    }
+
+    document.getElementById("feedback").innerHTML =
+        feedback;
+}
+
+</script>
+
+</body>
+</html>
